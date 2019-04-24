@@ -5,8 +5,16 @@ public class Dealership {
     private class DealershipNode{
         private String name;
         private DealershipNode nextMake;
+        private CarNode carDetails = new CarNode();
     }
-      
+    
+    private class CarNode{
+        private String reg;
+        private String model;
+        private String colour;
+        private CarNode nextCar;
+    }
+    
     private DealershipNode make;
     private DealershipNode current;
     
@@ -54,9 +62,25 @@ public class Dealership {
         }
     }
     
+    public void addCar(String carReg, String carColour, String carModel){
+        CarNode newCar = new CarNode();
+        newCar.reg = carReg;
+        newCar.colour = carColour;
+        newCar.model = carModel;
+        
+//        if (this.current.carDetails == null){
+//            this.current.carDetails = newCar;
+////        }else{
+////            DealershipNode currentCar = this.current.carDetails;
+////            while(currentMake.nextMake != null){
+////                currentMake = currentMake.nextMake;
+////            }
+////            currentMake.nextMake = newMake;
+//        }
+    }
+    
 //    public void remove(){
-//        
-//    }
+//        }
     
     public String toString(){
         String dealershipDetails = new String();
@@ -76,6 +100,32 @@ public class Dealership {
             }
         }
         return dealershipDetails;
+    }
+    
+        public String displayCars(){
+        String carDetails = new String();
+        CarNode current = this.current.carDetails;
+        
+        carDetails += "Reg: " + current.reg +"\n";
+        carDetails += "Colour: " + current.colour +"\n";
+        carDetails += "Model: " + current.model +"\n";
+        
+        if (current.nextCar == null){
+            carDetails += "\n";
+        }
+        else {
+            CarNode nextCar = current.nextCar;
+            while (nextCar != null){
+                carDetails += "\n";
+                
+                carDetails += "Reg: " + current.reg +"\n";
+                carDetails += "Colour: " + current.colour +"\n";
+                carDetails += "Model: " + current.model +"\n";
+                
+                nextCar = nextCar.nextCar;
+            }
+        }
+        return carDetails;
     }
 }
 
