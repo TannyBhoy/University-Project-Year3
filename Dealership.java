@@ -1,6 +1,13 @@
 
+import java.util.ArrayList;
 
 public class Dealership {
+    
+    public class NameNotUniqueException extends Exception {
+    }
+    
+//    public class NotValidInputException extends Exception {
+//    }
     
     private class DealershipNode{
         private String name;
@@ -16,7 +23,7 @@ public class Dealership {
         this.current = this.make;
     }
     
-    public void addMake(String carMake){
+    public void addMake(String carMake) throws NameNotUniqueException {
         DealershipNode newMake = new DealershipNode();
         newMake.name = carMake;
         
@@ -24,12 +31,19 @@ public class Dealership {
             this.current.nextMake = newMake;
         }else{
             DealershipNode currentMake = this.current.nextMake;
+            if (current.nextMake.name.equalsIgnoreCase(carMake)) {
+                throw new NameNotUniqueException();
+            }            
             while(currentMake.nextMake != null){
                 currentMake = currentMake.nextMake;
             }
             currentMake.nextMake = newMake;
         }
     }
+    
+//    public void option(Integer option) throws NameNotUniqueException {
+//        
+//    }
     
     public void search(String carMake){
         this.current = this.make;
@@ -39,7 +53,7 @@ public class Dealership {
             System.out.println("\nSuccess! \n" + "'" + carMake.toUpperCase() + "'" + " Found\n");
             this.current = make;
         }else if(this.make.nextMake == null){
-            System.out.println("Not Found");
+            System.out.println("'" + carMake.toUpperCase() + "'" + " Not Found\n");
         }else{
             make = this.make.nextMake;
             
@@ -54,10 +68,13 @@ public class Dealership {
         }
     }
     
-//    public void remove(){
-//        
+//    public void remove(String carMake){
+//        if(carMake.equals(this.make.name)){
+//            
+//        }
 //    }
     
+    @Override
     public String toString(){
         String dealershipDetails = new String();
         this.current = this.make;
@@ -66,11 +83,11 @@ public class Dealership {
         DealershipNode nextMake = this.current.nextMake;
         
         if (this.current.nextMake == null){
-            dealershipDetails += "\n";
+            dealershipDetails += " \tNo make entered!\n";
         }
         else {
             while (nextMake != null){
-                dealershipDetails += nextMake.name + "\n";
+                dealershipDetails += "\t" + nextMake.name + "\n";
                 
                 nextMake = nextMake.nextMake;
             }
