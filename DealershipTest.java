@@ -1,19 +1,25 @@
-
-
+//*
+//*
+//stepTwo
+//*
+//*
 public class DealershipTest {
 
-
-    public static void main (String args[]){
-        String carMake = Input.getString("Enter make: ");
-        Dealership carList = new Dealership(carMake);
+    public static void main(String args[]) {
+        String DealershipName = Input.getString("Enter Dealership Name: ");
+        System.out.println("\nWelcome to " + "'" + DealershipName.toUpperCase() + "'" + " Dealership\n");
+        System.out.println("Please select an option from the menu\n");
+        String carMake = "";
+        Dealership carList = new Dealership(DealershipName);
         Integer option;
         do {
             System.out.println("0: Quit");
-            System.out.println("1: Add Make");         
+            System.out.println("1: Add Make");
             System.out.println("2: Display");
             System.out.println("3: Search");
-            System.out.println("4: Add Car Details");
-            System.out.println("5: Display Cars");
+            System.out.println("4: Remove Make");
+            System.out.println("5: Add Car Details");
+            System.out.println("6: Display Cars\n");
             option = Input.getInteger("input option: ");
             System.out.println();
             switch (option) {
@@ -21,34 +27,58 @@ public class DealershipTest {
                     System.out.println("Quitting Program");
                     break;
                 case 1:
-                    carMake = Input.getString("Enter new make: ");
-                    carList.addMake(carMake);
+                    try {
+                        carMake = Input.getString("Enter new make: ");
+                        carList.addMake(carMake);
+                        System.out.println("'" + carMake.toUpperCase() + "'" + " added\n");
+                    } catch (Dealership.NameNotUniqueException e) {
+                        System.out.println("\n\tError! " + "'" + carMake.toUpperCase() + "'" + " already exists\n");
+                        System.out.println("\tPlease enter a new Make\n");
+                    }
                     break;
                 case 2:
                     System.out.println(carList);
-                    break;     
+                    break;
                 case 3:
-                    carMake = Input.getString("Search make: ");
-                    carList.search(carMake);                   
-                    break; 
+                    try {
+                        carMake = Input.getString("Search make: ");
+                        carList.search(carMake);
+                    } catch (Dealership.NameNotFoundException e) {
+                        System.out.println("\n\tError! " + "'" + carMake.toUpperCase() + "'" + " does not exist\n");
+                        System.out.println("\tPlease enter a new Search\n");
+                    }
+                    break;
                 case 4:
-                    carMake = Input.getString("Search make: ");
-                    carList.search(carMake);     
-                    String carReg = Input.getString("Registration: ");
-                    String carColour = Input.getString("Colour: ");
-                    String carModel = Input.getString("Model: ");
-                    carList.addCar(carReg, carColour, carModel);  
-                    break; 
-                    
+                    try {
+                        carMake = Input.getString("Search make: ");
+                        carList.remove(carMake);
+                    } catch (Dealership.NameNotFoundException e) {
+                        System.out.println("\n\tError! " + "'" + carMake.toUpperCase() + "'" + " does not exist\n");
+                        System.out.println("\tPlease enter a new Search\n");
+                    }
+                    break;
                 case 5:
+                    try {
+                        carMake = Input.getString("Search make: ");
+                        carList.search(carMake);
+                        String carReg = Input.getString("Registration: ");
+                        String carColour = Input.getString("Colour: ");
+                        String carModel = Input.getString("Model: ");
+                        carList.addCar(carReg, carColour, carModel);
+                    } catch (Dealership.NameNotFoundException e) {
+                        System.out.println("\n\tError! " + "'" + carMake.toUpperCase() + "'" + " does not exist\n");
+                        System.out.println("\tPlease enter a new Search\n");
+                    }
+                    break;                  
+                case 6:
                     carMake = Input.getString("Search make: ");
-                    carList.search(carMake); 
                     carList.displayCars();
                     break;  
                 default:
-                    System.out.println("invalid option");
+                    System.out.println("\t**INVALID OPTION**\n");
+                    System.out.println("\tPlease select a valid option from the menu below:\n");
             }
         } while (option != 0);
     }
-    
+
 }
