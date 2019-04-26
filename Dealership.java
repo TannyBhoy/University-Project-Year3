@@ -3,6 +3,7 @@
 //stepTwo
 //*
 //*
+
 public class Dealership {
 
     public class NameNotUniqueException extends Exception {
@@ -15,15 +16,6 @@ public class Dealership {
 
         private String name;
         private DealershipNode nextMake;
-        private CarNode carDetails = new CarNode();
-    }
-
-    private class CarNode {
-
-        private String reg;
-        private String model;
-        private String colour;
-        private CarNode nextCar;
     }
 
     private DealershipNode make;
@@ -55,24 +47,30 @@ public class Dealership {
         }
     }
 
-    public void option(Integer option) throws NameNotUniqueException {
-
+    public void checkMakes(String carMake) throws NameNotUniqueException {
+        DealershipNode makes = this.current;
+        while (makes != null) {
+            if (carMake.equalsIgnoreCase(makes.name)) {
+                throw new NameNotUniqueException();
+            }
+            makes = makes.nextMake;
+        }
     }
 
     public void search(String carMake) throws NameNotFoundException {
         DealershipNode currentVehicle = this.make.nextMake;
-        boolean searchOngoing = true;
+        boolean searchMake = true;
 
-        while (searchOngoing) {
+        while (searchMake) {
             if (carMake.equals(currentVehicle.name)) {
                 currentVehicle = this.make;
                 System.out.println("\nSuccess! \n" + "'" + carMake.toUpperCase() + "'" + " Found\n");
                 this.current = currentVehicle;
-                searchOngoing = false;
+                searchMake = false;
             } else {
                 if (currentVehicle.nextMake == null) {
                     System.out.println("'" + carMake.toUpperCase() + "'" + " Not Found\n");
-                    searchOngoing = false;
+                    searchMake = false;
                 } else {
                     currentVehicle = currentVehicle.nextMake;
 
@@ -86,40 +84,33 @@ public class Dealership {
 
     public void remove(String carMake) throws NameNotFoundException {
         DealershipNode currentVehicle = this.make;
-        boolean searchOngoing = true;
+        DealershipNode previousVehicle = null;
+        boolean searchMake = true;
 
-        while (searchOngoing) {
+        while (searchMake) {
             if (carMake.equals(currentVehicle.name)) {
                 currentVehicle = this.make;
                 System.out.println("\nSuccess! \n" + "'" + carMake.toUpperCase() + "'" + " Found\n");
                 this.current = currentVehicle;
-                searchOngoing = false;
+                searchMake = false;
+                if(previousVehicle == null){
+                    currentVehicle = null;
+                }
             } else {
                 if (currentVehicle.nextMake == null) {
                     System.out.println("'" + carMake.toUpperCase() + "'" + " Not Found\n");
-                    searchOngoing = false;
+                    searchMake = false;
                 } else {
+                    previousVehicle = currentVehicle;
                     currentVehicle = currentVehicle.nextMake;
+                    System.out.println("Previous vehicle: " + previousVehicle.name + " Current vehicle: " + currentVehicle.name);
                     if (current.nextMake.name.equals(carMake)) {
                         throw new NameNotFoundException();
                     }
                 }
             }
         }
-        if (carMake.equals(currentVehicle.name)) {
-            System.out.println("Match");
-            this.previous = this.current;
-            this.current = this.next;
-        }
 
-    }
-
-
-    public void addCar(String carReg, String carColour, String carModel) {
-        CarNode newCar = new CarNode();
-        newCar.reg = carReg;
-        newCar.colour = carColour;
-        newCar.model = carModel;
     }
 
     @Override
@@ -135,36 +126,10 @@ public class Dealership {
         } else {
             while (nextMake != null) {
                 dealershipDetails += "\t" + nextMake.name + "\n";
-
                 nextMake = nextMake.nextMake;
             }
         }
         return dealershipDetails;
     }
-//}
-
-    public String displayCars() {
-        String carDetails = new String();
-        CarNode current = this.current.carDetails;
-
-        carDetails += "Reg: " + current.reg + "\n";
-        carDetails += "Colour: " + current.colour + "\n";
-        carDetails += "Model: " + current.model + "\n";
-
-        if (current.nextCar == null) {
-            carDetails += "\n";
-        } else {
-            CarNode nextCar = current.nextCar;
-            while (nextCar != null) {
-                carDetails += "\n";
-
-                carDetails += "Reg: " + current.reg + "\n";
-                carDetails += "Colour: " + current.colour + "\n";
-                carDetails += "Model: " + current.model + "\n";
-
-                nextCar = nextCar.nextCar;
-            }
-        }
-        return carDetails;
-    }
 }
+
