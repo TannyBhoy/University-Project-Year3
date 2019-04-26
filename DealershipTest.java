@@ -27,6 +27,7 @@ public class DealershipTest {
                 case 1:
                     try {
                         carMake = Input.getString("Enter new make: ");
+                        carList.checkMakes(carMake);
                         carList.addMake(carMake);
                         System.out.println("'" + carMake.toUpperCase() + "'" + " added\n");
                     } catch (Dealership.NameNotUniqueException e) {
